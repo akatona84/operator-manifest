@@ -34,7 +34,16 @@ jobs:
           arch: amd64
           containerfiles: |
             ./Dockerfile
-     
+
+      - name: Build image linux/arm64
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: linux-arm64
+          arch: arm64
+          containerfiles: |
+            ./Dockerfile
+
       - name: Build image linux/ppc64le
         uses: redhat-actions/buildah-build@v2
         with:
@@ -60,6 +69,7 @@ jobs:
         run: |
           buildah manifest create ${{ env.IMAGE_NAME }}
           buildah manifest add ${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}:linux-amd64
+          buildah manifest add ${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}:linux-arm64
           buildah manifest add ${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}:linux-ppc64le
           buildah manifest add ${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}:linux-s390x
      
